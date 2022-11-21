@@ -6,7 +6,7 @@ import users_routes from './handlers/user';
 import orders_routes from './handlers/orders';
 import products_routes from './handlers/product';
 import dashboard_routes from './handlers/dashboard';
- 
+
 const PORT = process.env.PORT || 3000;
 const app = express();
 const address: string = `${process.env.HOST}': ${PORT}`;
@@ -23,6 +23,8 @@ products_routes(app);
 
 dashboard_routes(app);
 
-app.listen(PORT, function () {
+const appServer = app.listen(PORT, function () {
   console.log(`starting app on: ${address}`);
 });
+
+export default appServer;

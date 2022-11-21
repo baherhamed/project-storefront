@@ -16,3 +16,15 @@ use .env file to set the following variables:
 - BCRYPT_PASSWORD used in set JWT token;
 - SALT_ROUNDS number use to slat password used for JWT;
 - TOKEN_SECRET refere to secret used in set token;
+
+## backend and database run on port
+
+    by default port is : 3000; defined on .env file if this definition not exisit it will take another port from server file;
+
+## connecting to databse
+
+     - in file database.json ther are two objects with values needed to connect to database   depening on environment (dev || test) may also add (prod) if desired.
+        * values in every enviroment is:
+            # host ==> server or domain or ip;
+            # database ==> database name which connect to it depending on environment;
+            # user and password ==> credintional used to connecting database;

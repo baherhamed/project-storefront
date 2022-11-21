@@ -65,9 +65,9 @@ const showProduct = async (req: Request, res: Response) => {
 };
 
 const products_routes = (app: express.Application) => {
-  app.get('/products/get', validateToken, index);
+  app.get('/products/get', index);
   app.get('/products/getPopularProductRate', validateToken, popularProductRate);
-  app.post('/products/get/:id', validateToken, showProduct);
+  app.get('/products/get/:id', showProduct);
   app.get('/products/get/:category', validateToken, getProductCategory);
   app.post('/products/add', validateToken, createProduct);
   app.put('/products/update/:id', validateToken, updateProduct);

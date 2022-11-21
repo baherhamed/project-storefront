@@ -22,17 +22,20 @@ export class ProductStore {
     }
   }
 
-  async show(id: string): Promise<Product> {
+  async show(id: string): Promise<Product | null> {
     try {
       const conn = await Client.connect();
       const sql =
         'SELECT name,price,category,popular_rate FROM products WHERE id=($1)';
       const result = await conn.query(sql, [parseInt(id)]);
-
       conn.release();
-      return result.rows[0];
+      if (result.rows.length) {
+        return result.rows[0];
+      } else {
+        return null;
+      }
     } catch (error) {
-      throw new Error(`Can't get product with id ${id} ${error}`);
+      throw new Error(`Can't get product with ${id} ${error}`);
     }
   }
 
@@ -42,7 +45,6 @@ export class ProductStore {
       const sql =
         'SELECT name,price,category,popular_rate FROM products WHERE category=($1)';
       const result = await conn.query(sql, [category]);
-
       conn.release();
       return result.rows[0];
     } catch (error) {

@@ -16,11 +16,22 @@ describe('test user model', () => {
     expect(userModel.create).toBeDefined();
   });
 
-  it('create method should return data with type user', async () => {
+  it('create method should return null if user exisit', async () => {
     const userData: User = {
       firstname: 'baher ha',
       lastname: 'hussein',
       username: 'baherhamedhussein',
+      password: 'password',
+    };
+    const newUser = await userModel.create(userData);
+    expect(newUser).toEqual(null);
+  });
+
+  it('create method should return data with type user if user not exisit', async () => {
+    const userData: User = {
+      firstname: 'baher ha',
+      lastname: 'hussein',
+      username: String(Date.now()),
       password: 'password',
     };
     const newUser = await userModel.create(userData);

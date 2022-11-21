@@ -89,8 +89,8 @@ const users_routes = (app: express.Application) => {
   app.get('/users/get', validateToken, index);
   app.get('/users/get/:id', validateToken, showUser);
   app.post('/users/add', create);
-  app.put('/users/update/:id', validateToken, update);
-  app.get('/users/orders/:id', validateToken, getUserOrders);
+  app.put('/users/update/:id', update);
+  app.get('/users/orders/:id', getUserOrders);
 };
 
 export default users_routes;

@@ -16,7 +16,7 @@ describe('test product model', () => {
     expect(productModel.create).toBeDefined();
   });
 
-  it('show method should return data with type Product', async () => {
+  it('show method should return null if Product exisit', async () => {
     const productData: Product = {
       name: 'product 12',
       price: 30,
@@ -24,6 +24,19 @@ describe('test product model', () => {
       popular_rate: 3,
     };
     const newProduct = await productModel.create(productData);
+
+    expect(newProduct).toEqual(null);
+  });
+
+  it('show method should return null if Product not exisit', async () => {
+    const productData: Product = {
+      name: String(Date.now()),
+      price: 30,
+      category: 'laptop',
+      popular_rate: 3,
+    };
+    const newProduct = await productModel.create(productData);
+
     expect(newProduct).toEqual(jasmine.any(Object));
   });
 

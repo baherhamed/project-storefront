@@ -66,7 +66,7 @@ const orderProducts = async (req: Request, res: Response) => {
 };
 
 const orders_routes = (app: express.Application) => {
-  app.get('/orders', index);
+  app.get('/orders/get', index);
   app.post('/orders/add', create);
   app.put('/orders/update/:id', update);
   app.delete('/orders/delete/:id', deletedArticle);
