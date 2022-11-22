@@ -61,5 +61,3 @@ export class ExpensiveProductsQueries {
     }
   }
 }
-// DESC
-// ASC ;

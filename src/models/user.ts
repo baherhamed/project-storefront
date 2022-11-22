@@ -133,28 +133,32 @@ export class userSchmea {
     username: string,
     password: string
   ): Promise<string | null> {
-    const conn = await Client.connect();
-    const sql = 'SELECT * FROM users WHERE username=($1)';
+    try {
+      const conn = await Client.connect();
+      const sql = 'SELECT * FROM users WHERE username=($1)';
 
-    const result = await conn.query(sql, [username]);
-    conn.release();
+      const result = await conn.query(sql, [username]);
+      conn.release();
 
-    if (result.rows.length) {
-      const user = result.rows[0];
-      if (bcrypt.compareSync(password + pepper, user.password)) {
-        const token = jwt.sign(
-          { user: { id: user.id, username: user.username } },
-          `${process.env.TOKEN_SECRET}`,
-          {
-            expiresIn: '2h',
-          }
-        );
+      if (result.rows.length) {
+        const user = result.rows[0];
+        if (bcrypt.compareSync(password + pepper, user.password)) {
+          const token = jwt.sign(
+            { user: { id: user.id, username: user.username } },
+            `${process.env.TOKEN_SECRET}`,
+            {
+              expiresIn: '2h',
+            }
+          );
 
-        return token;
+          return token;
+        }
       }
-    }
 
-    return null;
+      return null;
+    } catch (error) {
+      throw new Error(`error while authinticate:  ${error}`);
+    }
   }
 
   async getUserOrders(id: string): Promise<Order[]> {

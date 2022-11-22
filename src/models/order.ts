@@ -33,18 +33,6 @@ export class OrderStore {
     }
   }
 
-  // async show(id: string): Promise<Order> {
-  //   try {
-  //     const conn = await Client.connect();
-  //     const sql = 'SELECT FROM order_products WHERE id=($1)';
-  //     const result = await conn.query(sql, [id]);
-  //     conn.release();
-  //     return result.rows[0];
-  //   } catch (error) {
-  //     throw new Error(`Can't get order products with id ${id} ${error}`);
-  //   }
-  // }
-
   async create(a: Order): Promise<Order | null> {
     try {
       const conn = await Client.connect();

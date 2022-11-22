@@ -28,3 +28,9 @@ use .env file to set the following variables:
             # host ==> server or domain or ip;
             # database ==> database name which connect to it depending on environment;
             # user and password ==> credintional used to connecting database;
+
+    go to terminal and type  psql -U postgres to run pg as with admin user in first time then do the following
+
+    1- create database with CREATE DATABASE <database name>;
+    2- create user to used to connect database with CREATE USER <username> WITH PASSWORD <password>;
+    3- set privileges to user with GRANT ALL PRIVILEGES ON DATABASE <database name> TO <database user>;
