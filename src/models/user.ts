@@ -147,7 +147,7 @@ export class userSchmea {
             { user: { id: user.id, username: user.username } },
             `${process.env.TOKEN_SECRET}`,
             {
-              expiresIn: '2h',
+              expiresIn: '7d',
             }
           );
 
@@ -164,14 +164,14 @@ export class userSchmea {
   async getUserOrders(id: string): Promise<Order[]> {
     try {
       const conn = await Client.connect();
-      const sql = 'SELECT id,status FROM orders WHERE user_id=($1) ';
+      const sql = 'SELECT id,status FROM orders WHERE user_id=($1)';
       const result = await conn.query(sql, [id]);
 
       conn.release();
       const order = result.rows;
       return order;
     } catch (error) {
-      throw new Error(`Can't get order products error is:  ${error}`);
+      throw new Error(`Can't get order products error is: ${error}`);
     }
   }
 }

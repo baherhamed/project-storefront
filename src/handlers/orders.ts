@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { Order, OrderStore } from '../models/order';
-
+import validateToken from '../middleware/validate-token';
 import decodeToken from '../shared/decode-token';
 
 const orderModel = new OrderStore();
@@ -85,12 +85,12 @@ const orderProducts = async (req: Request, res: Response) => {
 };
 
 const orders_routes = (app: express.Application) => {
-  app.get('/orders/get', index);
-  app.post('/orders/add', create);
-  app.put('/orders/update/:id', update);
-  app.delete('/orders/delete/:id', deletedArticle);
-  app.get('/orders/:id/products', orderProducts);
-  app.put('/orders/close/:id', completeOrder);
+  app.get('/orders/get', validateToken, index);
+  app.post('/orders/add', validateToken, create);
+  app.put('/orders/update/:id', validateToken, update);
+  app.delete('/orders/delete/:id', validateToken, deletedArticle);
+  app.get('/orders/:id/products', validateToken, orderProducts);
+  app.put('/orders/close/:id', validateToken, completeOrder);
 };
 
 export default orders_routes;

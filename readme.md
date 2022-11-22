@@ -17,9 +17,18 @@ use .env file to set the following variables:
 - SALT_ROUNDS number use to slat password used for JWT;
 - TOKEN_SECRET refere to secret used in set token;
 
-## backend and database run on port
+## Scripts
+
+- npm run test-db // used to create testa db and tables
+- npm run test // used to build project and tst it with jasmine
+
+## backend default port
 
     by default port is : 3000; defined on .env file if this definition not exisit it will take another port from server file;
+
+## database default port
+
+    by default port is : 5432;
 
 ## connecting to databse
 

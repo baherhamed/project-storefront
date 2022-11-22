@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "test": "npm run build && npm run jasmine",
+    "test-db": "ENV=test db-migrate --env test up && jasmine && db-migrate db:drop test",
+    "test": "npm run build && npm run jasmine ",
     "jasmine": "jasmine",
     "start": " nodemon  src/server.ts",
     "build": "npx tsc"
