@@ -5,18 +5,35 @@ import validateToken from '../middleware/validate-token';
 const productModel = new ProductStore();
 
 const index = async (req: Request, res: Response) => {
-  const Products = await productModel.index();
-  res.json(Products);
+  try {
+    const Products = await productModel.index();
+    res.json(Products);
+  } catch (error) {
+    res.status(400);
+    res.send(`error while get products ${error}`);
+  }
 };
 
 const getProductCategory = async (req: Request, res: Response) => {
-  const productsList = await productModel.productCategory(req.params.category);
-  res.json(productsList);
+  try {
+    const productsList = await productModel.productCategory(
+      req.params.category
+    );
+    res.json(productsList);
+  } catch (error) {
+    res.status(400);
+    res.send(`error while get products by category ${error}`);
+  }
 };
 
 const popularProductRate = async (req: Request, res: Response) => {
-  const productsList = await productModel.popularProduct();
-  res.json(productsList);
+  try {
+    const productsList = await productModel.popularProduct();
+    res.json(productsList);
+  } catch (error) {
+    res.status(400);
+    res.send(`error while get products rates ${error}`);
+  }
 };
 
 const createProduct = async (req: Request, res: Response) => {
@@ -50,18 +67,34 @@ const updateProduct = async (req: Request, res: Response) => {
     category: req.body.category,
     popular_rate: req.body.popular_rate,
   };
-  const updatedProduct = await productModel.update(updatedProductData);
-  res.json(updatedProduct);
+
+  try {
+    const updatedProduct = await productModel.update(updatedProductData);
+    res.json(updatedProduct);
+  } catch (error) {
+    res.status(400);
+    res.send(`error while update product  ${error}`);
+  }
 };
 
 const deletedProduct = async (req: Request, res: Response) => {
-  await productModel.delete(req.params.id);
-  res.json({ message: 'Deleted succefully' });
+  try {
+    await productModel.delete(req.params.id);
+    res.json({ message: 'Deleted succefully' });
+  } catch (error) {
+    res.status(400);
+    res.send(`error while delete product  ${error}`);
+  }
 };
 
 const showProduct = async (req: Request, res: Response) => {
-  const selectedProduct = await productModel.show(req.params.id);
-  res.json(selectedProduct);
+  try {
+    const selectedProduct = await productModel.show(req.params.id);
+    res.json(selectedProduct);
+  } catch (error) {
+    res.status(400);
+    res.send(`error while show product data ${error}`);
+  }
 };
 
 const products_routes = (app: express.Application) => {

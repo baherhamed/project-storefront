@@ -7,13 +7,23 @@ const user = new userSchmea();
 require('dotenv').config('../../.env');
 
 const index = async (req: Request, res: Response) => {
-  const usersList = await user.index();
-  res.json(usersList);
+  try {
+    const usersList = await user.index();
+    res.json(usersList);
+  } catch (error) {
+    res.status(400);
+    res.send(`error while get all users data ${error}`);
+  }
 };
 
 const showUser = async (req: Request, res: Response) => {
-  const selectedUser = await user.show(req.params.id);
-  res.json(selectedUser);
+  try {
+    const selectedUser = await user.show(req.params.id);
+    res.json(selectedUser);
+  } catch (error) {
+    res.status(400);
+    res.send(`error while show user data ${error}`);
+  }
 };
 
 const create = async (req: Request, res: Response) => {
@@ -80,8 +90,13 @@ const update = async (req: Request, res: Response) => {
 
 const getUserOrders = async (req: Request, res: Response) => {
   // const user_id = await decodeToken(req);
-  const productsList = await user.getUserOrders(req.params.id);
-  res.json(productsList);
+  try {
+    const productsList = await user.getUserOrders(req.params.id);
+    res.json(productsList);
+  } catch (error) {
+    res.status(400);
+    res.send(`error while get user orders ${error}`);
+  }
 };
 
 const users_routes = (app: express.Application) => {

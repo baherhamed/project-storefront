@@ -6,8 +6,13 @@ import decodeToken from '../shared/decode-token';
 const orderModel = new OrderStore();
 
 const index = async (req: Request, res: Response) => {
-  const order_products = await orderModel.index();
-  res.json(order_products);
+  try {
+    const order_products = await orderModel.index();
+    res.json(order_products);
+  } catch (error) {
+    res.status(400);
+    res.json(`error while get orders: ${error}`);
+  }
 };
 
 const create = async (req: Request, res: Response) => {
@@ -34,25 +39,39 @@ const create = async (req: Request, res: Response) => {
 };
 
 const update = async (req: Request, res: Response) => {
-  const user_id = await decodeToken(req);
-  const updatedOrderProductsData: Order = {
-    id: req.params.id,
-    status: 'active',
-    user_id,
-    productsList: req.body.productsList,
-  };
-  const updatedOrder = await orderModel.update(updatedOrderProductsData);
-  res.json(updatedOrder);
+  try {
+    const user_id = await decodeToken(req);
+    const updatedOrderProductsData: Order = {
+      id: req.params.id,
+      status: 'active',
+      user_id,
+      productsList: req.body.productsList,
+    };
+    const updatedOrder = await orderModel.update(updatedOrderProductsData);
+    res.json(updatedOrder);
+  } catch (error) {
+    res.json(`error whill update order ${error}`);
+  }
 };
 
 const completeOrder = async (req: Request, res: Response) => {
-  const orderCompleted = await orderModel.closeOrdercomplete(req.params.id);
-  res.json(orderCompleted);
+  try {
+    const orderCompleted = await orderModel.closeOrdercomplete(req.params.id);
+    res.json(orderCompleted);
+  } catch (error) {
+    res.status(400);
+    res.json(`error whill complete order ${error}`);
+  }
 };
 
 const deletedArticle = async (req: Request, res: Response) => {
-  await orderModel.delete(req.params.id);
-  res.json({ message: 'Deleted succefully' });
+  try {
+    await orderModel.delete(req.params.id);
+    res.json({ message: 'Deleted succefully' });
+  } catch (error) {
+    res.status(400);
+    res.json(`error whill delete order ${error}`);
+  }
 };
 
 const orderProducts = async (req: Request, res: Response) => {
