@@ -7,13 +7,13 @@ const productModel = new ProductStore();
 
 describe('test order model', () => {
   beforeAll(async () => {
-    //   const userData: User = {
-    //     firstname: 'baher',
-    //     lastname: 'hamed',
-    //     username: 'baher',
-    //     password: 'password',
-    //   };
-    //   await userModel.create(userData);
+    const userData: User = {
+      firstname: 'baher',
+      lastname: 'hamed',
+      username: 'baher',
+      password: 'password',
+    };
+    await userModel.create(userData);
 
     const orderData: Order = {
       status: 'active',
@@ -25,13 +25,13 @@ describe('test order model', () => {
     };
     await orderModel.create(orderData);
 
-    // const productData: Product = {
-    //   name: 'product 12',
-    //   price: 30,
-    //   category: 'laptop',
-    //   popular_rate: 3,
-    // };
-    // await productModel.create(productData);
+    const productData: Product = {
+      name: 'product 12',
+      price: 30,
+      category: 'laptop',
+      popular_rate: 3,
+    };
+    await productModel.create(productData);
   });
 
   it('should have index method', async () => {
