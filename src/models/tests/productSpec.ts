@@ -1,8 +1,28 @@
 import { Product, ProductStore } from '../product';
+import { User, userSchmea } from '../user';
 
 const productModel = new ProductStore();
+const userModel = new userSchmea();
 
 describe('test product model', () => {
+  beforeAll(async () => {
+    const userData: User = {
+      firstname: 'baher',
+      lastname: 'hamed',
+      username: 'baher',
+      password: 'password',
+    };
+    await userModel.create(userData);
+
+    const productData: Product = {
+      name: 'product 1',
+      price: 30,
+      category: 'laptop',
+      popular_rate: 3,
+    };
+    await productModel.create(productData);
+  });
+
   it('should have index method', async () => {
     expect(productModel.index).toBeDefined();
   });
@@ -46,7 +66,7 @@ describe('test product model', () => {
 
   it('update method should return data with type Product', async () => {
     const productData = {
-      id: '1',
+      id: 1,
       name: 'updated product 3',
       price: 30,
       category: 'laptop',

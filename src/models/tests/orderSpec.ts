@@ -1,8 +1,39 @@
 import { Order, OrderStore } from '../order';
-
+import { User, userSchmea } from '../user';
+import { Product, ProductStore } from '../product';
 const orderModel = new OrderStore();
+const userModel = new userSchmea();
+const productModel = new ProductStore();
 
 describe('test order model', () => {
+  beforeAll(async () => {
+    //   const userData: User = {
+    //     firstname: 'baher',
+    //     lastname: 'hamed',
+    //     username: 'baher',
+    //     password: 'password',
+    //   };
+    //   await userModel.create(userData);
+
+    const orderData: Order = {
+      status: 'active',
+      user_id: 1,
+      productsList: [
+        { product_id: 1, quantity: 1 },
+        { product_id: 2, quantity: 2 },
+      ],
+    };
+    await orderModel.create(orderData);
+
+    // const productData: Product = {
+    //   name: 'product 12',
+    //   price: 30,
+    //   category: 'laptop',
+    //   popular_rate: 3,
+    // };
+    // await productModel.create(productData);
+  });
+
   it('should have index method', async () => {
     expect(orderModel.index).toBeDefined();
   });
@@ -18,12 +49,11 @@ describe('test order model', () => {
 
   it('show method should return data with type Order', async () => {
     const orderData: Order = {
-      id: '3',
       status: 'active',
-      user_id: 2,
+      user_id: 1,
       productsList: [
-        { product_id: '1', quantity: 1 },
-        { product_id: '2', quantity: 2 },
+        { product_id: 1, quantity: 1 },
+        { product_id: 2, quantity: 2 },
       ],
     };
     const newOrder = await orderModel.create(orderData);
@@ -36,13 +66,13 @@ describe('test order model', () => {
 
   it('update method should return data with type Order', async () => {
     const orderData = {
-      id: '4',
+      id: 1,
       status: 'active',
       user_id: 2,
       productsList: [
-        { product_id: '1', quantity: 1 },
-        { product_id: '2', quantity: 2 },
-        { product_id: '3', quantity: 3 },
+        { product_id: 1, quantity: 1 },
+        { product_id: 2, quantity: 2 },
+        { product_id: 3, quantity: 3 },
       ],
     };
     const updateOrder = await orderModel.update(orderData);

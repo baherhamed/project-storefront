@@ -25,6 +25,9 @@ export class userSchmea {
   async index(): Promise<SelectedUser[]> {
     try {
       const conn = await Client.connect();
+      const validateTableExisit =
+        'CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY,firstname VARCHAR(50)NOT NULL,lastname VARCHAR(50)NOT NULL,username VARCHAR(50)NOT NULL,password VARCHAR(255)NOT NULL)';
+      await conn.query(validateTableExisit);
       const sql = 'SELECT username,firstname,lastname FROM users';
       const result = await conn.query(sql);
       const users = result.rows;

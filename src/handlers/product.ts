@@ -61,7 +61,7 @@ const createProduct = async (req: Request, res: Response) => {
 
 const updateProduct = async (req: Request, res: Response) => {
   const updatedProductData: Product = {
-    id: req.params.id,
+    id: parseInt(req.params.id),
     name: req.body.name,
     price: req.body.price,
     category: req.body.category,

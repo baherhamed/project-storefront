@@ -1,7 +1,7 @@
 import appServer from '../../server';
 import request from 'supertest';
 
-describe('test server', async () => {
+describe('test user handler', async () => {
   it('check if server is up', async function () {
     const response = await request(appServer).get('/');
     expect(response.status).toBe(200);
@@ -28,14 +28,14 @@ describe('test server', async () => {
     const newUser = {
       firstname: 'user first name',
       lastname: 'user last name',
-      username: 'username1',
+      username: String(Date.now()),
       password: 'password1',
     };
     const response = await request(appServer).post('/users/add').send(newUser);
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(200);
   });
 
-  it('add new user if user aleady exisit', async function () {
+  it('cannot add new user if user aleady exisit', async function () {
     const newUser = {
       firstname: 'user firstname',
       lastname: 'user last name',

@@ -2,7 +2,7 @@
 import Client from '../database';
 
 export type Product = {
-  id?: string;
+  id?: number;
   name: string;
   price: number;
   category: string;
@@ -13,6 +13,10 @@ export class ProductStore {
   async index(): Promise<Product[]> {
     try {
       const conn = await Client.connect();
+      const validateTableExisit =
+        'CREATE TABLE IF NOT EXISTS products(id SERIAL PRIMARY KEY,name VARCHAR(64) NOT NULL,price integer NOT NULL,category VARCHAR(64),popular_rate integer)';
+      await conn.query(validateTableExisit);
+
       const sql = 'SELECT name,price,category,popular_rate FROM products ';
       const result = await conn.query(sql);
       conn.release();

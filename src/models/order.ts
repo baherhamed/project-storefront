@@ -2,21 +2,21 @@
 import Client from '../database';
 
 export type Order = {
-  id?: string;
+  id?: number;
   status: string;
   user_id: number;
   productsList: orderItem[];
 };
 
 export type orderItem = {
-  product_id: string;
+  product_id: number;
   quantity: number;
 };
 
 export type OrderProduct = {
-  id?: string;
-  order_id: string;
-  product_id: string;
+  id?: number;
+  order_id: number;
+  product_id: number;
   quantity: number;
 };
 
@@ -24,6 +24,9 @@ export class OrderStore {
   async index(): Promise<Order[]> {
     try {
       const conn = await Client.connect();
+      const validateTableExisit =
+        'CREATE TABLE IF NOT EXISTS orders(id SERIAL PRIMARY KEY,user_id bigint REFERENCES users(id),status VARCHAR(10))';
+      await conn.query(validateTableExisit);
       const sql = 'SELECT * FROM order_products';
       const result = await conn.query(sql);
       conn.release();
@@ -37,16 +40,17 @@ export class OrderStore {
     try {
       const conn = await Client.connect();
       const sql =
-        'INSERT INTO orders(status,user_id) VALUES ($1,$2) RETURNING id';
-      const result = await conn.query(sql, [a.status, a.user_id]);
-      const order = result.rows[0];
+        'INSERT INTO orders(status,user_id) VALUES ($1,$2) RETURNING *';
 
+      const result = await conn.query(sql, [a.status, a.user_id]);
+      const order = await result.rows[0];
       for await (const item of a.productsList) {
-        const selectedItem = {
+        const selectedItem: OrderProduct = {
           order_id: order.id,
           product_id: item.product_id,
           quantity: item.quantity,
         };
+
         await this.addProduct(selectedItem);
       }
 
@@ -60,8 +64,11 @@ export class OrderStore {
   async addProduct(a: OrderProduct): Promise<Order> {
     try {
       const conn = await Client.connect();
+      const validateTableExisit =
+        'CREATE TABLE IF NOT EXISTS order_products(id SERIAL PRIMARY KEY,quantity integer,order_id bigint REFERENCES orders(id),product_id bigint REFERENCES products(id))';
+      await conn.query(validateTableExisit);
       const sql =
-        'INSERT INTO order_products(order_id,product_id,quantity) VALUES ($1,$2,$3) RETURNING *';
+        'INSERT INTO order_products(order_id,product_id,quantity) VALUES ($1,$2,$3)';
       const result = await conn.query(sql, [
         a.order_id,
         a.product_id,
@@ -71,26 +78,27 @@ export class OrderStore {
       const order = result.rows[0];
       return order;
     } catch (error) {
-      throw new Error(`Can't create order products error is:  ${error}`);
+      throw new Error(`Can't add  order products error is:  ${error}`);
     }
   }
 
   async update(a: Order): Promise<Order | string> {
     try {
       const conn = await Client.connect();
-      const checkOrderStatusSql = 'SELECT * FROM orders WHERE id=($1)';
+      const checkOrderStatusSql = 'SELECT FROM orders WHERE id=($1)';
       const orderStatus = await conn.query(checkOrderStatusSql, [a.id]);
-      if (orderStatus.rows[0].status === 'completed') {
+
+      if (orderStatus.rows[0] && orderStatus.rows[0].status === 'completed') {
         return 'Cannot update Order becuse order status is Completed';
       }
 
-      const orderProductsList =
-        'DELETE FROM order_products WHERE order_id=($1)';
-      await conn.query(orderProductsList, [a.id]);
+      // const orderProductsList =
+      //   'DELETE * FROM order_products WHERE order_id=($1)';
+      // await conn.query(orderProductsList, [a.id]);
 
       for await (const item of a.productsList) {
         const selectedItem = {
-          order_id: String(a.id),
+          order_id: Number(a.id),
           product_id: item.product_id,
           quantity: item.quantity,
         };

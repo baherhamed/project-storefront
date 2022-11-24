@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import { Order, OrderStore } from '../models/order';
 import validateToken from '../middleware/validate-token';
-import decodeToken from '../shared/decode-token';
+// import decodeToken from '../shared/decode-token';
 
 const orderModel = new OrderStore();
 
@@ -16,10 +16,11 @@ const index = async (req: Request, res: Response) => {
 };
 
 const create = async (req: Request, res: Response) => {
-  const user_id = await decodeToken(req);
+  // const user_id = await decodeToken(req);
+
   const newOrderData: Order = {
     status: 'active',
-    user_id,
+    user_id: 1,
     productsList: req.body.productsList,
   };
 
@@ -40,11 +41,12 @@ const create = async (req: Request, res: Response) => {
 
 const update = async (req: Request, res: Response) => {
   try {
-    const user_id = await decodeToken(req);
+    // const user_id = await decodeToken(req);
+
     const updatedOrderProductsData: Order = {
-      id: req.params.id,
+      id: parseInt(req.params.id),
       status: 'active',
-      user_id,
+      user_id: 1,
       productsList: req.body.productsList,
     };
     const updatedOrder = await orderModel.update(updatedOrderProductsData);

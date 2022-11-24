@@ -3,6 +3,16 @@ import { User, userSchmea } from '../user';
 const userModel = new userSchmea();
 
 describe('test user model', () => {
+  beforeAll(async () => {
+    const userData: User = {
+      firstname: 'baher',
+      lastname: 'hamed',
+      username: 'baher',
+      password: 'password',
+    };
+    await userModel.create(userData);
+  });
+
   it('should have index method', async () => {
     expect(userModel.index).toBeDefined();
   });
@@ -44,7 +54,7 @@ describe('test user model', () => {
 
   it('update method should return data with type user', async () => {
     const userData = {
-      id: 5,
+      id: 2,
       firstname: 'updated baher user',
       lastname: 'hussein',
       username: 'baherhamedhussein',
